@@ -5,6 +5,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 
 import { Product } from './product';
+import { CartItem } from '../cart/cart-item';
 
 @Injectable({
   providedIn: 'root'

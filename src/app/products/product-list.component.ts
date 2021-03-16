@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import { CartService } from '../cart/cart.service';
 import { Product } from './product';
 import { ProductService } from './product.service';
+
 
 @Component({
   templateUrl: './product-list.component.html',
@@ -10,9 +11,11 @@ import { ProductService } from './product.service';
 export class ProductListComponent implements OnInit {
   pageTitle = 'Product List';
   imageWidth = 50;
+  // imageHeight = 35;
   imageMargin = 2;
-  showImage = false;
+  showImage = true;
   errorMessage = '';
+  addCartMessage = '';
 
   _listFilter = '';
   get listFilter(): string {
@@ -26,7 +29,8 @@ export class ProductListComponent implements OnInit {
   filteredProducts: Product[] = [];
   products: Product[] = [];
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService,
+              private cartService: CartService) { }
 
   ngOnInit(): void {
     this.productService.getProducts().subscribe({
@@ -37,15 +41,21 @@ export class ProductListComponent implements OnInit {
       error: err => this.errorMessage = err
     });
   }
-
   performFilter(filterBy: string): Product[] {
     filterBy = filterBy.toLocaleLowerCase();
     return this.products.filter((product: Product) =>
       product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
   }
-
   toggleImage(): void {
     this.showImage = !this.showImage;
   }
-
+  handleAddToCart(product: Product): void {
+    console.log(product);
+    const addCartRes = this.cartService.addItemToCart(product.productCode, 1);
+    if (!addCartRes) {
+      this.errorMessage = 'Add to shopping cart failed';
+      return;
+    }
+    this.addCartMessage = 'Item ' + product.productName + ' was added to shopping cart.';
+  }
 }

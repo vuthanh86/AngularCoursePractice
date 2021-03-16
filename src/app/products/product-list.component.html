@@ -7,44 +7,37 @@
     <div class="row">
       <div class="col-md-2">Filter by:</div>
       <div class="col-md-4">
-        <input type="text"
-               [(ngModel)]="listFilter" />
+        <input type="text" [(ngModel)]="listFilter" />
       </div>
     </div>
-    <div class="row"
-         *ngIf="listFilter">
+    <div class="row" *ngIf="listFilter">
       <div class="col-md-6">
         <h4>Filtered by: {{listFilter}}</h4>
       </div>
     </div>
 
     <div class="table-responsive">
-      <table class="table mb-0"
-             *ngIf="products && products.length">
+      <table class="table mb-0" *ngIf="products && products.length">
         <thead>
           <tr>
             <th>
-              <button class="btn btn-outline-primary btn-sm"
-                      (click)="toggleImage()">
+              <!-- <button class="btn btn-outline-primary btn-sm" (click)="toggleImage()">
                 {{showImage ? "Hide" : "Show"}} Image
-              </button>
+              </button> -->
             </th>
             <th>Product</th>
             <th>Code</th>
             <th>Available</th>
             <th>Price</th>
             <th>5 Star Rating</th>
-            <th></th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let product of filteredProducts">
             <td>
-              <img *ngIf="showImage && product.imageUrl"
-                   [src]="product.imageUrl"
-                   [title]="product.productName"
-                   [style.width.px]="imageWidth"
-                   [style.margin.px]="imageMargin">
+              <img *ngIf="showImage && product.imageUrl" [src]="product.imageUrl" [title]="product.productName"
+                [style.width.px]="imageWidth" [style.margin.px]="imageMargin">
             </td>
             <td>
               <a>
@@ -59,7 +52,7 @@
               </pm-star>
             </td>
             <td>
-              <button class="btn btn-default">Add Cart</button>
+              <button class="btn btn-primary btn-sm" (click)="handleAddToCart(product)">Add Cart</button> | 
               <a class="btn btn-outline-primary btn-sm" [routerLink]="['/products', product.id, 'edit']">
                 Edit
               </a>
@@ -72,7 +65,10 @@
   </div>
 </div>
 
-<div *ngIf="errorMessage"
-     class="alert alert-danger">
+<div *ngIf="errorMessage" class="alert alert-danger">
   Error: {{ errorMessage }}
+</div>
+
+<div *ngIf="addCartMessage" class="success">
+  Error: {{ addCartMessage }}
 </div>
