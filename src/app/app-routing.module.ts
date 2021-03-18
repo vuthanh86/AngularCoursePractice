@@ -8,7 +8,6 @@ const AppRoutes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: '**', component: PageNotFoundComponent }
 ];
-
 @NgModule({
     imports: [
         RouterModule.forRoot(AppRoutes, { relativeLinkResolution: 'legacy' })
@@ -19,5 +18,4 @@ const AppRoutes = [
 })
 
 export class AppRoutingModule {
-
 }

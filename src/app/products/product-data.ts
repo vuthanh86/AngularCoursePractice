@@ -1,10 +1,11 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
+import { User } from '../users/user';
 
 import { Product } from './product';
 
 export class ProductData implements InMemoryDbService {
 
-  createDb(): { products: Product[]} {
+  createDb(): { products: Product[], users: User[]} {
     const products: Product[] = [
       {
         id: 1,
@@ -64,6 +65,32 @@ export class ProductData implements InMemoryDbService {
         category: 'Gaming'
       }
     ];
-    return { products };
+
+    const users: User[] = [
+      {
+        id: 1,
+        userName: 'thanhvu',
+        password: '123',
+        isAdmin: true
+      },
+      {
+        id: 2,
+        userName: 'user1',
+        password: '123',
+        isAdmin: false
+      },
+      {
+        id: 3,
+        userName: 'user2',
+        password: '123',
+        isAdmin: false
+      },{
+        id: 4,
+        userName: 'admin',
+        password: '123',
+        isAdmin: true
+      }
+    ];
+    return { products, users };
   }
 }

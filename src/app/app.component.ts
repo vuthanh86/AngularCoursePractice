@@ -4,6 +4,7 @@ import { AuthService } from './users/auth.service';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { CartService } from './cart/cart.service';
 import { CartItem } from './cart/cart-item';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'pm-root',
@@ -16,7 +17,8 @@ export class AppComponent implements OnInit {
   totalItemInCart = 0;
 
   constructor(private authService: AuthService,
-              private cartService: CartService) {
+              private cartService: CartService,
+              private route: Router) {
     setTheme('bs4');
   }
   ngOnInit(): void {
@@ -40,6 +42,6 @@ export class AppComponent implements OnInit {
   }
   logOut(): void {
     this.authService.logout();
-    console.log('Log out');
+    this.route.navigateByUrl('/login');
   }
 }
