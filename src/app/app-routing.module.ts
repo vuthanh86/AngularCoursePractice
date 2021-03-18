@@ -1,11 +1,11 @@
 import { PageNotFoundComponent } from './page-not-found.component';
 import { WelcomeComponent } from './home/welcome.component';
 import { NgModule } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 const AppRoutes = [
     { path: 'wellcome', component: WelcomeComponent },
-    { path: '', redirectTo: 'wellcome', pathMatch: 'full' },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: '**', component: PageNotFoundComponent }
 ];
 
