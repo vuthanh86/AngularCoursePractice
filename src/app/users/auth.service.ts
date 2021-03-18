@@ -11,6 +11,7 @@ import { catchError, tap } from 'rxjs/operators';
 })
 export class AuthService {
   private userApiUrl = 'api/users';
+  private users: User[] = [];
   currentUser: User;
 
   get isLoggedIn(): boolean {
@@ -18,7 +19,12 @@ export class AuthService {
   }
 
   constructor(private messageService: MessageService,
-    private http: HttpClient) { }
+    private http: HttpClient) {
+      this.getUsers().subscribe({
+        next: users => this.users = users,
+        error: err => console.log(err)
+      })
+    }
 
   getUsers(): Observable<User[]>{
     return this.http.get<User[]>(this.userApiUrl)
@@ -40,20 +46,16 @@ export class AuthService {
       return false;
     }
 
-    this.messageService.addMessage(`User: ${this.currentUser.userName} logged in`);
+    this.messageService.addMessage(`User: ${userRes.userName} logged in`);
     return true;
   }
 
   filterUser(usrName: string, pwd: string): User {
-    let users: User[] = [];
-    this.getUsers().subscribe({
-      next: usrs => users = usrs,
-      error: err => console.log(err)
-    })
-    if (!users || users.length === 0)
+
+    if (!this.users || this.users.length === 0)
       return null;
 
-    const filtered = users.find(user => user.userName.toLowerCase() === usrName.toLowerCase()
+    const filtered = this.users.find(user => user.userName.toLowerCase() === usrName.toLowerCase()
                                       && user.password.toLowerCase() === pwd.toLowerCase());
     if (!filtered)
       return null;
