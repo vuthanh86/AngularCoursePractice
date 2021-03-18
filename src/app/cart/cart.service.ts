@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { CartItem } from './cart-item';
 import { AddToCartResult } from './add-item-result';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  cardItems: CartItem[] = [];
+  cardItem$ = new BehaviorSubject<CartItem[]>([]);
 
   getCartItems() : Observable<CartItem[]> {
-    const items = of(this.cardItems);
-    return items;
+    return this.cardItem$.asObservable();
   }
 
   addItemToCart(productCode: string, quantity: number): AddToCartResult {
@@ -21,29 +20,35 @@ export class CartService {
 
     let existingItem = this.filterExistingItem(productCode);
 
+    const cardItems = this.cardItem$.getValue();
+
     if (existingItem) {
       existingItem.quantity += 1;
-      const itemIdx = this.cardItems.indexOf(existingItem);
+      const itemIdx = cardItems.indexOf(existingItem);
       if (itemIdx !== -1) {
-        this.cardItems[itemIdx] = existingItem;
+        cardItems[itemIdx] = existingItem;
       }
     } else {
       existingItem = { productId: productCode, quantity: 1, user: 'test' };
-      this.cardItems.push(existingItem);
+      cardItems.push(existingItem);
     }
-    const addResult = { status: true, message: 'Add item:' + productCode + ' to cart was success.', totalItem: this.cardItems.length }
+    this.cardItem$.next(cardItems);
+    const addResult = { status: true, message: 'Add item:' + productCode + ' to cart was success.', quantity: existingItem.quantity, totalItem: cardItems.length };
+
     console.log('CardService: addItemToCard sucess. Item value: ' + JSON.stringify(addResult));
     return addResult;
   }
 
   filterExistingItem(productCode: string): CartItem {
-    const initCartItem = { productId: productCode, quantity: 1, user: 'test' };
-    if (!this.cardItems) {
+
+    const cardItems = this.cardItem$.getValue();
+
+    if (!cardItems || cardItems.length == 0) {
       return null;
     }
 
     const code = productCode.toLocaleLowerCase();
-    const filtered = this.cardItems.find((item: CartItem) =>
+    const filtered = cardItems.find((item: CartItem) =>
       item.productId.toLocaleLowerCase().indexOf(code) !== -1);
 
     if (!filtered) {

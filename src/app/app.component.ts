@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AuthService } from './user/auth.service';
+import { AuthService } from './users/auth.service';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { CartService } from './cart/cart.service';
 import { CartItem } from './cart/cart-item';

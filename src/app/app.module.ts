@@ -13,7 +13,6 @@ import { PageNotFoundComponent } from './page-not-found.component';
 
 /* Feature Modules */
 import { ProductModule } from './products/product.module';
-import { UserModule } from './user/user.module';
 import { MessageModule } from './messages/message.module';
 import { CartComponent } from './cart/cart.component';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -23,6 +22,9 @@ import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UserData } from './users/user-data';
+import { UserModule } from './users/user.module';
+
 
 registerLocaleData(en);
 
@@ -31,6 +33,7 @@ registerLocaleData(en);
     BrowserModule,
     HttpClientModule,
     InMemoryWebApiModule.forRoot(ProductData, { delay: 1000 }),
+    InMemoryWebApiModule.forRoot(UserData, { delay: 1000 }),
     ProductModule,
     UserModule,
     MessageModule,
